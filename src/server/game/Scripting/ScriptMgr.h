@@ -382,6 +382,10 @@ class TC_GAME_API ItemScript : public ScriptObject
 
         // Called when a player uses the item.
         virtual bool OnUse(Player* /*player*/, Item* /*item*/, SpellCastTargets const& /*targets*/, ObjectGuid /*castId*/) { return false; }
+		//Called when a player uses the Itemp_template
+		virtual bool OnItemHello(Player* /*player*/, Item* /*item*/) { return false; }
+		virtual bool OnItemSelect(Player* /*player*/, Item* /*item*/, uint32 /*sender*/, uint32 /*action*/) { return false; }
+		virtual bool OnItemSelectCode(Player* /*player*/, Item* /*item*/, uint32 /*sender*/, uint32 /*action*/, const char* /*code*/) { return false; }
 
         // Called when the item expires (is destroyed).
         virtual bool OnExpire(Player* /*player*/, ItemTemplate const* /*proto*/) { return false; }
@@ -1023,6 +1027,9 @@ class TC_GAME_API ScriptMgr
         bool OnDummyEffect(Unit* caster, uint32 spellId, SpellEffIndex effIndex, Item* target);
         bool OnQuestAccept(Player* player, Item* item, Quest const* quest);
         bool OnItemUse(Player* player, Item* item, SpellCastTargets const& targets, ObjectGuid castId);
+		bool OnItemHello(Player* player, Item* item);
+		bool OnItemSelect(Player* player, Item* item, uint32 sender, uint32 action);
+		bool OnItemSelectCode(Player* player, Item* item, uint32 sender, uint32 action, const char* code);
         bool OnItemExpire(Player* player, ItemTemplate const* proto);
         bool OnItemRemove(Player* player, Item* item);
 

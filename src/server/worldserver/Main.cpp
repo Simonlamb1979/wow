@@ -164,6 +164,11 @@ extern int main(int argc, char** argv)
             TC_LOG_INFO("server.worldserver", "Using configuration file %s.", sConfigMgr->GetFilename().c_str());
             TC_LOG_INFO("server.worldserver", "Using SSL version: %s (library: %s)", OPENSSL_VERSION_TEXT, SSLeay_version(SSLEAY_VERSION));
             TC_LOG_INFO("server.worldserver", "Using Boost version: %i.%i.%i", BOOST_VERSION / 100000, BOOST_VERSION / 100 % 1000, BOOST_VERSION % 100);
+			TC_LOG_INFO("server.bnetserver", "亚边个编译-版本:T_801_28153_V0.5\n");
+            TC_LOG_INFO("server.bnetserver", "首个加入库尔提拉斯及赞达拉野外生物，掉落及任务\n");
+
+			printf("亚边个编译-版本:T_801_28153_V0.5\n");
+            printf("首个加入库尔提拉斯及赞达拉野外生物，掉落及任务\n");
         }
     );
 

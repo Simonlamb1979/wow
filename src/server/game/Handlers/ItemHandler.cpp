@@ -30,6 +30,9 @@
 #include "Opcodes.h"
 #include "Player.h"
 #include "WorldSession.h"
+#include "SpellInfo.h"
+#include "Spell.h"
+#include "ScriptMgr.h"
 
 void WorldSession::HandleSplitItemOpcode(WorldPackets::Item::SplitItem& splitItem)
 {
@@ -354,30 +357,33 @@ void WorldSession::HandleDestroyItemOpcode(WorldPackets::Item::DestroyItem& dest
 void WorldSession::HandleReadItem(WorldPackets::Item::ReadItem& readItem)
 {
     Item* item = _player->GetItemByPos(readItem.PackSlot, readItem.Slot);
-    if (item && item->GetTemplate()->GetPageText())
-    {
-        InventoryResult msg = _player->CanUseItem(item);
-        if (msg == EQUIP_ERR_OK)
-        {
-            WorldPackets::Item::ReadItemResultOK packet;
-            packet.Item = item->GetGUID();
-            SendPacket(packet.Write());
+	if (item && item->GetTemplate()->GetPageText())
+	{
+		InventoryResult msg = _player->CanUseItem(item);
+		if (!sScriptMgr->OnItemHello(GetPlayer(), item))
+		{
+			if (msg == EQUIP_ERR_OK)
+			{
+				WorldPackets::Item::ReadItemResultOK packet;
+				packet.Item = item->GetGUID();
+				SendPacket(packet.Write());
 
-            TC_LOG_INFO("network", "STORAGE: Item page sent");
-        }
-        else
-        {
-            /// @todo: 6.x research new values
-            /*WorldPackets::Item::ReadItemResultFailed packet;
-            packet.Item = item->GetGUID();
-            packet.Subcode = ??;
-            packet.Delay = ??;
-            SendPacket(packet.Write());*/
+				TC_LOG_INFO("network", "STORAGE: Item page sent");
+			}
+			else
+			{
+				/// @todo: 6.x research new values
+				/*WorldPackets::Item::ReadItemResultFailed packet;
+				packet.Item = item->GetGUID();
+				packet.Subcode = ??;
+				packet.Delay = ??;
+				SendPacket(packet.Write());*/
 
-            TC_LOG_INFO("network", "STORAGE: Unable to read item");
-            _player->SendEquipError(msg, item, NULL);
-        }
-    }
+				TC_LOG_INFO("network", "STORAGE: Unable to read item");
+				_player->SendEquipError(msg, item, NULL);
+			}
+		}
+	}
     else
         _player->SendEquipError(EQUIP_ERR_ITEM_NOT_FOUND, NULL, NULL);
 }

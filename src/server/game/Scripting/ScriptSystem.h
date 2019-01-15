@@ -65,6 +65,21 @@ struct ScriptPointMove
 
 typedef std::vector<ScriptPointMove> ScriptPointVector;
 
+struct Item_Teleporter
+{
+	int expansion;
+	int MenuClass;
+	int Icon;
+	std::string Title;
+	int PRG;
+	int Team;
+	int Param;
+	int GmLevel;
+	float x;
+	float y;
+	float z;
+};
+
 class TC_GAME_API SystemMgr
 {
     private:
@@ -81,6 +96,7 @@ class TC_GAME_API SystemMgr
         //Database
         void LoadScriptWaypoints();
         void LoadScriptSplineChains();
+		void LoadTeleport_Template();
 
         ScriptPointVector const* GetPointMoveList(uint32 creatureEntry) const
         {

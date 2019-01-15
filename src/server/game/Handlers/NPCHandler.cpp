@@ -203,6 +203,18 @@ void WorldSession::HandleGossipSelectOptionOpcode(WorldPackets::NPC::GossipSelec
 
     Creature* unit = nullptr;
     GameObject* go = nullptr;
+	Item* item = nullptr;
+
+		if (packet.GossipUnit.IsItem())
+		 {
+		item = _player->GetItemByGuid(packet.GossipUnit);
+		if (item)
+			{
+			sScriptMgr->OnItemSelect(_player, item, _player->PlayerTalkClass->GetGossipOptionSender(packet.GossipIndex), _player->PlayerTalkClass->GetGossipOptionAction(packet.GossipIndex));
+			TC_LOG_DEBUG("network", "my debug it is item");
+			return;
+			}
+		}
     if (packet.GossipUnit.IsCreatureOrVehicle())
     {
         unit = GetPlayer()->GetNPCIfCanInteractWith(packet.GossipUnit, UNIT_NPC_FLAG_GOSSIP);

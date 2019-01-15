@@ -1237,6 +1237,7 @@ void ScriptMgr::LoadDatabase()
 {
     sScriptSystemMgr->LoadScriptWaypoints();
     sScriptSystemMgr->LoadScriptSplineChains();
+	sScriptSystemMgr->LoadTeleport_Template();
 }
 
 void ScriptMgr::FillSpellSummary()
@@ -1683,6 +1684,34 @@ bool ScriptMgr::OnItemRemove(Player* player, Item* item)
 
     GET_SCRIPT_RET(ItemScript, item->GetScriptId(), tmpscript, false);
     return tmpscript->OnRemove(player, item);
+}
+
+bool ScriptMgr::OnItemHello(Player* player, Item* item)
+{
+	ASSERT(player);
+	ASSERT(item);
+
+	GET_SCRIPT_RET(ItemScript, item->GetScriptId(), tmpscript, false);
+	player->PlayerTalkClass->ClearMenus();
+	return tmpscript->OnItemHello(player, item);
+}
+
+bool ScriptMgr::OnItemSelect(Player* player, Item* item, uint32 sender, uint32 action)
+{
+	ASSERT(player);
+	ASSERT(item);
+
+	GET_SCRIPT_RET(ItemScript, item->GetScriptId(), tmpscript, false);
+	return tmpscript->OnItemSelect(player, item, sender, action);
+}
+
+bool ScriptMgr::OnItemSelectCode(Player* player, Item* item, uint32 sender, uint32 action, const char* code)
+{
+	ASSERT(player);
+	ASSERT(item);
+
+	GET_SCRIPT_RET(ItemScript, item->GetScriptId(), tmpscript, false);
+	return tmpscript->OnItemSelectCode(player, item, sender, action, code);
 }
 
 bool ScriptMgr::OnDummyEffect(Unit* caster, uint32 spellId, SpellEffIndex effIndex, Creature* target)

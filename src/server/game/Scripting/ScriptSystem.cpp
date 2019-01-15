@@ -175,3 +175,27 @@ std::vector<SplineChainLink> const* SystemMgr::GetSplineChain(Creature const* wh
 {
     return GetSplineChain(who->GetEntry(), id);
 }
+
+void SystemMgr::LoadTeleport_Template()
+{
+	TC_LOG_INFO("server.loading", "TSCR: Loading Teleport_Template System...");
+	//Get Version information
+	QueryResult Result = WorldDatabase.PQuery("SELECT id FROM teleport_template");
+
+	if (Result)
+	{
+		uint32 TeleCount = 0;
+
+		do
+		{
+			Field* pFields = Result->Fetch();
+
+			++TeleCount;
+		} while (Result->NextRow());
+		TC_LOG_INFO("server.loading", ">> Loaded %u Teleport_Template data.", TeleCount);
+	}
+	else
+	{
+		TC_LOG_INFO("server.loading", ">> Loaded 0 Teleport_Template data. DB table `Teleport_Template` is empty.");
+	}
+}
